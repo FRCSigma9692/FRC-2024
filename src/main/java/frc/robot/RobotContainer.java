@@ -100,7 +100,7 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
     .whileTrue(new RunCommand(() -> robot.gyro.reset(), robot));
     
     new JoystickButton(m_driverController, Button.kTriangle.value)
-    .whileTrue(new RunCommand(() -> shooter.runShooter(0.6,0), shooter));
+    .whileTrue(new RunCommand(() -> shooter.runShooter(1,0), shooter));
     
     new JoystickButton(m_driverController, Button.kR1.value)
     .whileTrue(new RunCommand(() -> robot.Xshape(), robot));
@@ -114,7 +114,7 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   .onTrue(new RunCommand(() -> mech.armTo(168), mech));
   
   new JoystickButton(m_driverController2, Button.kL1.value)
-  .onTrue(new RunCommand(() -> mech.armTo(67), mech)); 
+  .onTrue(new RunCommand(() -> mech.armTo(67.5), mech)); 
   
   new JoystickButton(m_driverController2, Button.kSquare.value)
   .onTrue(new RunCommand(() -> mech.armTo(125), mech));
