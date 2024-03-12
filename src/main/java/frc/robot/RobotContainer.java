@@ -63,19 +63,19 @@ public double offset;
   public RobotContainer() {
 
     NamedCommands.registerCommand("shoot", Shoot);
-    NamedCommands.registerCommand("arm", new ArmCmd(mech, 38));
+    NamedCommands.registerCommand("arm", new ArmCmd(mech, 98));
 
-    NamedCommands.registerCommand("armB1", new ArmCmd(mech, 43));
-    NamedCommands.registerCommand("armFarB1", new ArmCmd(mech, 49));
+    NamedCommands.registerCommand("armB1", new ArmCmd(mech, 103));
+    NamedCommands.registerCommand("armFarB1", new ArmCmd(mech, 109));
 
-    NamedCommands.registerCommand("armB_one", new ArmCmd(mech, 38));
+    NamedCommands.registerCommand("armB_one", new ArmCmd(mech, 98));
     
-    NamedCommands.registerCommand("armDown", new ArmCmd(mech, 1));
+    NamedCommands.registerCommand("armDown", new ArmCmd(mech, 63));
 
-    NamedCommands.registerCommand("armforAuto2", new ArmCmd(mech, 32));
-    NamedCommands.registerCommand("armFar", new ArmCmd(mech, 46));
+    NamedCommands.registerCommand("armforAuto2", new ArmCmd(mech, 92));
+    NamedCommands.registerCommand("armFar", new ArmCmd(mech, 106));
 
-        NamedCommands.registerCommand("armFarB3", new ArmCmd(mech, 48.5));
+        NamedCommands.registerCommand("armFarB3", new ArmCmd(mech, 108.5));
     NamedCommands.registerCommand("IntakeSense", new SensorIntakeCmd(intake, 0.7, intake.sensor, 4.5));
     autoChooser = AutoBuilder.buildAutoChooser("Blue1");
 SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -111,13 +111,13 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   .onTrue((intake3));
 
   new JoystickButton(m_driverController2, Button.kCross.value)
-  .onTrue(new RunCommand(() -> mech.armTo(108), mech));
+  .onTrue(new RunCommand(() -> mech.armTo(168), mech));
   
   new JoystickButton(m_driverController2, Button.kL1.value)
-  .onTrue(new RunCommand(() -> mech.armTo(5), mech)); 
+  .onTrue(new RunCommand(() -> mech.armTo(65), mech)); 
   
   new JoystickButton(m_driverController2, Button.kSquare.value)
-  .onTrue(new RunCommand(() -> mech.armTo(65), mech));
+  .onTrue(new RunCommand(() -> mech.armTo(125), mech));
    
    new JoystickButton(m_driverController2, Button.kTriangle.value)
    .whileTrue(new ParallelCommandGroup(new RunCommand(() -> shooter.runShooter(0.3,0), shooter),
