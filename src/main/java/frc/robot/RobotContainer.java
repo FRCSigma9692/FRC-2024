@@ -48,7 +48,7 @@ public class RobotContainer {
   public ShooterCmd Shoot = new ShooterCmd(shooter, intake, 1.7, 0.75, 0.7,0.9); 
  public SensorIntakeCmd intake_and_sense = new SensorIntakeCmd(intake, 0.8, intake.sensor , 4 );
   // public SensorIntakeCmd intake2 = new SensorIntakeCmd(intake, 0.8, intake.sensor , 10 );
-   public Sensorbtnintake intake3 = new Sensorbtnintake(intake, 0.8, intake.sensor );
+   public Sensorbtnintake intake3 = new Sensorbtnintake(intake, 0.7, intake.sensor );
 
 
   public XboxController m_driverController = new XboxController(0);
@@ -70,7 +70,7 @@ public double offset;
 
     NamedCommands.registerCommand("armB_one", new ArmCmd(mech, 98));
     
-    NamedCommands.registerCommand("armDown", new ArmCmd(mech, 63));
+    NamedCommands.registerCommand("armDown", new ArmCmd(mech, 66));
 
     NamedCommands.registerCommand("armforAuto2", new ArmCmd(mech, 92));
     NamedCommands.registerCommand("armFar", new ArmCmd(mech, 106));
@@ -114,7 +114,7 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   .onTrue(new RunCommand(() -> mech.armTo(168), mech));
   
   new JoystickButton(m_driverController2, Button.kL1.value)
-  .onTrue(new RunCommand(() -> mech.armTo(65), mech)); 
+  .onTrue(new RunCommand(() -> mech.armTo(67), mech)); 
   
   new JoystickButton(m_driverController2, Button.kSquare.value)
   .onTrue(new RunCommand(() -> mech.armTo(125), mech));

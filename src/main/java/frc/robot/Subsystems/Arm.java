@@ -89,7 +89,7 @@ double i = 1;
 
         public void armDown(double B1){
         double pos = (((Math.toDegrees(l_UpAbsoluteEncoder.getPosition()) + Math.toDegrees(r_UpAbsoluteEncoder.getPosition())))/2.0);
-        if(pos>65){
+        if(pos>66){
             l_Up.set(-(B1));  //-(b1-0)   
             r_Up.set(-(B1));} //(b1-0)
         else{
@@ -172,7 +172,7 @@ double i = 1;
     }
     public void downwithabsenc(double speed){
     double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()) + Math.toDegrees(r_UpAbsoluteEncoder.getPosition()))/2;
-    if(pos >65){
+    if(pos >66){
 
         l_Up.set(-speed);
         r_Up.set(-speed);
