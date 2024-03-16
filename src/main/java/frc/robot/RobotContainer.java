@@ -105,6 +105,9 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
     new JoystickButton(m_driverController, Button.kR1.value)
     .whileTrue(new RunCommand(() -> robot.Xshape(), robot));
   
+    new JoystickButton(m_driverController, Button.kSquare.value)
+    .whileTrue(new RunCommand(() -> mech.ll2SetArm(), mech));
+    
     // Driver 2
 
   new JoystickButton(m_driverController2, Button.kR1.value)
