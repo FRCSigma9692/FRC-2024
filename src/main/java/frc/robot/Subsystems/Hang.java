@@ -22,11 +22,11 @@ public class Hang extends SubsystemBase{
 
 
     void HangTo(double sp){
-        if((Math.abs(Enc_R.getPosition()) + Math.abs(Enc_L.getPosition()))/2  > sp+5){
+        if((Math.abs(Enc_R.getPosition()) + Math.abs(Enc_L.getPosition()))/2  > sp+3){
             HangR.set(0.75);
             HangL.set(-0.75);
         }
-        else if((Math.abs(Enc_R.getPosition()) + Math.abs(Enc_L.getPosition()))/2  < sp-5){
+        else if((Math.abs(Enc_R.getPosition()) + Math.abs(Enc_L.getPosition()))/2  < sp-3){
             HangR.set(-0.5);
             HangL.set(0.5);}
         else{
@@ -44,7 +44,7 @@ public class Hang extends SubsystemBase{
     
         HangL.set(0.75);
        }
-       else if(JL < -0.1 && ((Enc_L.getPosition())>3)){
+       else if(JL < -0.1 && ((Enc_L.getPosition())>2)){
         
         HangL.set(-0.75);
        }
@@ -55,7 +55,7 @@ public class Hang extends SubsystemBase{
        if(JR > 0.1 && ((Enc_R.getPosition())>-320)){
         HangR.set(-0.75);
        }
-       else if(JR < -0.1 && ((Enc_R.getPosition())<-3)){
+       else if(JR < -0.1 && ((Enc_R.getPosition())<-2)){
         HangR.set(0.75);
        }
        else{

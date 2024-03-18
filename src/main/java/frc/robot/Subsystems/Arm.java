@@ -20,12 +20,12 @@ public class Arm extends SubsystemBase{
     private double camAngle = 33.0; // Limelight Camera mount angle
     private double speakerTagHeight = 57.05; // AprilTag ID6 Height
     private double ampTagHeight = 53.7; // AprilTag ID1 Height
-    private double setDisRobotToTag = 80; // Inch
+    //private double setDisRobotToTag = 80; // Inch
 
-    private double sourceID = 1;
-    private double speakerID = 2;
-    private double ampID = 3;
-    private double stageID = 4;
+    //private double sourceID = 1;
+    private double speakerID = 6;
+    //private double ampID = 3;
+    //private double stageID = 4;
 
     private double actualDistance;
 
@@ -50,6 +50,7 @@ public class Arm extends SubsystemBase{
     double error = 0;
     double output = 0;
 
+    double setAngle= 25;
     double lastDistance;
     double angle;
     // End Limelight -----------------
@@ -172,12 +173,12 @@ double i = 1;
     public void armTo(double sp){// Amp is 4.211 for left n 4.248 for right 243 deg
         double pos = (((Math.toDegrees(l_UpAbsoluteEncoder.getPosition()) + Math.toDegrees(r_UpAbsoluteEncoder.getPosition())))/2.0);
         if(pos> sp+10){
-            l_Up.set(-0.7);
-            r_Up.set(-0.7);
+            l_Up.set(-0.9);
+            r_Up.set(-0.9);
         }
         else if(pos< sp-10){
-            l_Up.set(0.7);
-            r_Up.set(0.7);
+            l_Up.set(0.9);
+            r_Up.set(0.9);
 
 
         }
@@ -235,12 +236,10 @@ double i = 1;
         
         if(targetV != 0){
             
-            if(targetID == 6){
+            if(targetID == speakerID){
                 actualDistance = (speakerTagHeight - camHeight) / Math.tan(Math.toRadians(camAngle + targetY));
             }
-            if(targetID == 1){
-                actualDistance = (ampTagHeight - camHeight) / Math.tan(Math.toRadians(camAngle + targetY));
-            }
+            
             //actualDistance = actualDistance * 39.37;
         
             //r_Up_enc.setPosition(Math.abs(actualDistance));
@@ -256,7 +255,7 @@ double i = 1;
             
             lastDistance = actualDistance - 36;
             lastDistance = lastDistance*0.268;
-            angle = lastDistance + 30 + 66;
+            angle = lastDistance + setAngle + 66;
 
             error = angle - pos;
             output = Math.abs(error * kP);
