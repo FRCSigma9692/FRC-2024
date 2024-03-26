@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
-      "y": 5.5
+      "x": 0.7284778050297884,
+      "y": 6.75715268691593
     },
-    "rotation": 0
+    "rotation": 56.309932474020144
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "armforAuto2"
+            "name": "arm1temp"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
@@ -30,22 +36,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "wait",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeSense"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TestAuto"
-                }
-              }
-            ]
+            "waitTime": 9.0
           }
         },
         {
@@ -55,28 +48,29 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Blue2Note2"
+                  "pathName": "B1TMP1"
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "armforAuto2"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.5
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeSense"
+                      }
+                    }
+                  ]
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "armDown"
           }
         }
       ]

@@ -2,7 +2,16 @@
   "robotWidth": 0.78,
   "robotLength": 1.041,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "Blue1",
+    "Blue2",
+    "Blue3",
+    "Blue_One",
+    "Idk",
+    "M_B1_2note & TMP",
+    "M_B3_2Note",
+    "Other Important"
+  ],
   "autoFolders": [],
   "defaultMaxVel": 1.0,
   "defaultMaxAccel": 1.0,

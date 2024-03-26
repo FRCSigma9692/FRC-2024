@@ -80,6 +80,7 @@ CommandScheduler.getInstance().run();
 
 m_robotContainer.hanger.display();
 m_robotContainer.intake.DigitalDisplay();
+m_robotContainer.shooter.displaySpeed();
 
 
 
