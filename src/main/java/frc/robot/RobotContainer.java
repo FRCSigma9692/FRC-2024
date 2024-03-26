@@ -31,6 +31,7 @@ import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Arm;
 import frc.robot.commands.ArmCmd;
+import frc.robot.commands.ArmShootCmd;
 // import frc.robot.commands.IntakeCmd;
 import frc.robot.commands.SensorIntakeCmd;
 import frc.robot.commands.Sensorbtnintake;
@@ -45,10 +46,10 @@ public class RobotContainer {
   public Intake intake = new Intake(); 
   public Arm mech = new Arm();
   public Hang hanger = new Hang();
-  public ShooterCmd Shoot = new ShooterCmd(shooter, intake, 1.7, 0.75, 0.7,0.9); 
+  public ShooterCmd Shoot = new ShooterCmd(shooter, intake, 1.7, 0.9, 0.75,0.9); 
  public SensorIntakeCmd intake_and_sense = new SensorIntakeCmd(intake, 0.8, intake.sensor , 4 );
   // public SensorIntakeCmd intake2 = new SensorIntakeCmd(intake, 0.8, intake.sensor , 10 );
-   public Sensorbtnintake intake3 = new Sensorbtnintake(intake, 0.7, intake.sensor );
+   public Sensorbtnintake intake3 = new Sensorbtnintake(intake, 0.9, intake.sensor );
 
 
   public XboxController m_driverController = new XboxController(0);
@@ -64,15 +65,19 @@ public double offset;
 
     NamedCommands.registerCommand("shoot", Shoot);
     NamedCommands.registerCommand("arm", new ArmCmd(mech, 98));
+    NamedCommands.registerCommand("Q59_Shoot", new ShooterCmd(shooter, intake, 2.5, 0, 0.22, 0.7));
 
-    NamedCommands.registerCommand("armB1", new ArmCmd(mech, 103));
-    NamedCommands.registerCommand("armFarB1", new ArmCmd(mech, 109));
+    NamedCommands.registerCommand("armB1", new ArmCmd(mech, 104));
+    NamedCommands.registerCommand("arm1temp", new ArmShootCmd(mech, 90));
+    NamedCommands.registerCommand("arm1tempshoot", new ParallelCommandGroup(new ArmShootCmd(mech, 90), new ShooterCmd(shooter,  intake, 2, 1.5, 0.75, 0.9)));
+
+    NamedCommands.registerCommand("armFarB1", new ArmCmd(mech, 105));
 
     NamedCommands.registerCommand("armB_one", new ArmCmd(mech, 98));
     
-    NamedCommands.registerCommand("armDown", new ArmCmd(mech, 66));
+    NamedCommands.registerCommand("armDown", new ArmCmd(mech, 62));
 
-    NamedCommands.registerCommand("armforAuto2", new ArmCmd(mech, 92));
+    NamedCommands.registerCommand("armforAuto2", new ArmCmd(mech, 91.5));
     NamedCommands.registerCommand("armFar", new ArmCmd(mech, 106));
 
         NamedCommands.registerCommand("armFarB3", new ArmCmd(mech, 108.5));
@@ -95,17 +100,21 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   private void configureBindings() {
+
   //Driver 1
-    new JoystickButton(m_driverController, Button.kCircle.value)
-    .whileTrue(new RunCommand(() -> robot.gyro.reset(), robot));
-    
-    new JoystickButton(m_driverController, Button.kTriangle.value)
-    .whileTrue(new RunCommand(() -> shooter.runShooter(1,0), shooter));
-    
-    new JoystickButton(m_driverController, Button.kR1.value)
-    .whileTrue(new RunCommand(() -> robot.Xshape(), robot));
+  new JoystickButton(m_driverController, Button.kCircle.value)
+  .whileTrue(new RunCommand(() -> robot.gyro.reset(), robot));
   
-    // Driver 2
+  new JoystickButton(m_driverController, Button.kTriangle.value)
+  .whileTrue(new RunCommand(() -> shooter.runShooter(0.6,0), shooter));
+  
+  new Trigger(() -> m_driverController.getRightTriggerAxis()>0.7)
+  .whileTrue(new RunCommand(() -> shooter.runShooter(0.6,0), shooter)); 
+  
+  new JoystickButton(m_driverController, Button.kR1.value)
+  .whileTrue(new RunCommand(() -> robot.Xshape(), robot));
+
+  // Driver 2
 
   new JoystickButton(m_driverController2, Button.kR1.value)
   .onTrue((intake3));
@@ -117,11 +126,14 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   .onTrue(new RunCommand(() -> mech.armTo(67.5), mech)); 
   
   new JoystickButton(m_driverController2, Button.kSquare.value)
-  .onTrue(new RunCommand(() -> mech.armTo(125), mech));
+  .onTrue(new RunCommand(() -> mech.armToforauto(91.5, 0.55), mech));
+
+  new JoystickButton(m_driverController2, Button.kCircle.value)
+  .whileTrue(new RunCommand(() -> mech.ll2SetArm(), mech));
    
-   new JoystickButton(m_driverController2, Button.kTriangle.value)
-   .whileTrue(new ParallelCommandGroup(new RunCommand(() -> shooter.runShooter(0.3,0), shooter),
-    (new RunCommand(() -> intake.intake(0,0.5), intake)))); //Right is Intake , left is outtake
+  new JoystickButton(m_driverController2, Button.kTriangle.value)
+  .whileTrue(new ParallelCommandGroup(new RunCommand(() -> shooter.runShooter(0.3,0), shooter),
+  (new RunCommand(() -> intake.intake(0,0.5), intake)))); //Right is Intake , left is outtake
    
     //POV
 

@@ -3,50 +3,56 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5,
-        "y": 4.16
+        "x": 0.73,
+        "y": 4.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5,
-        "y": 4.148289163454218
+        "x": 1.3491521419562087,
+        "y": 1.3393728180323687
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.4733924503512332,
-        "y": 4.08
+        "x": 8.288663034725174,
+        "y": 0.7730727569078459
       },
       "prevControl": {
-        "x": 1.4733924503512332,
-        "y": 4.08
+        "x": 6.135103211910461,
+        "y": 0.7546662626957543
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4,
+      "rotationDegrees": 0,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue3",
+  "folder": "M_B3_2Note",
   "previewStartingState": {
-    "rotation": -59.34933204294712,
+    "rotation": -61.309457434255,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

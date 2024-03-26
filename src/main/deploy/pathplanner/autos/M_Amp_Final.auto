@@ -2,31 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.57,
-      "y": 4.16
+      "x": 0.7284778050297884,
+      "y": 6.75715268691593
     },
-    "rotation": 0.0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Blue3path1"
+            "name": "arm1tempshoot"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "arm"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
+            "waitTime": 0
           }
         },
         {
@@ -36,13 +30,19 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.0
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Blue3path2"
+                  "pathName": "Copy of  B1TMP2"
                 }
               },
               {
@@ -59,15 +59,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "arm"
+                  "pathName": "Copy of B1TMP3"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Blue3Path3"
+                  "name": "arm1temp"
                 }
               }
             ]
@@ -80,9 +80,40 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "armDown"
+            "waitTime": 0
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of B1TMP4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "armDown"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.8
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeSense"
+                }
+              }
+            ]
           }
         }
       ]

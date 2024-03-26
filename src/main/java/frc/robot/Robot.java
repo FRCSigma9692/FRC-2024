@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 
 
     m_robotContainer = new RobotContainer();
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
   }
 
   @Override
@@ -80,6 +80,7 @@ CommandScheduler.getInstance().run();
 
 m_robotContainer.hanger.display();
 m_robotContainer.intake.DigitalDisplay();
+m_robotContainer.shooter.displaySpeed();
 
 
 

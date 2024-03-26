@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Arm;
 
-public class ArmCmd extends Command{
+public class ArmShootCmd extends Command{
     Arm arm;
     double sp;
-    public ArmCmd(Arm arm, double setPoint){
+    public ArmShootCmd(Arm arm, double setPoint){
         this.arm = arm;
         sp = setPoint;
     }
@@ -20,7 +20,7 @@ public class ArmCmd extends Command{
     @Override
     public void execute(){
         SmartDashboard.getString("status", "Executed");
-        arm.armTo(sp);
+        arm.armToforauto(sp, 0.55);
         // arm.UpGetPos();`````````````1
         SmartDashboard.putString("Arm", "NOT Over!");
     }

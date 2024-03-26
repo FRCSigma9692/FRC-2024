@@ -44,6 +44,7 @@ public class Shooter extends SubsystemBase{
     public void runShooter(double B2, double B1){
         l_pulley.set(B1 - B2);
         r_pulley.set(B1 - B2);
+
 }
  
 public void runShooterAuto(double B1){
@@ -65,5 +66,10 @@ public void runshooterDPAD(int POV){
         SmartDashboard.putString("Shoot", "false");
         runShooter(0, 0);
     }
+}
+
+public void displaySpeed(){
+        SmartDashboard.putNumber("rShooterSpeed", r_enc.getVelocity()) ;
+        SmartDashboard.putNumber("lShooterSpeed", l_enc.getVelocity()) ;
 }
 }

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5,
-        "y": 4.16
+        "x": 2.54,
+        "y": 4.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5,
-        "y": 4.148289163454218
+        "x": 2.5905008158090492,
+        "y": 4.098792791023529
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.4733924503512332,
-        "y": 4.08
+        "x": 0.73,
+        "y": 4.5
       },
       "prevControl": {
-        "x": 1.4733924503512332,
-        "y": 4.08
+        "x": 0.63,
+        "y": 4.5
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": -60.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue3",
+  "folder": "M_B3_2Note",
   "previewStartingState": {
-    "rotation": -59.34933204294712,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

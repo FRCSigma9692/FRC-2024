@@ -2,37 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.57,
-      "y": 6.95
+      "x": 0.7284778050297884,
+      "y": 4.321298685393376
     },
-    "rotation": 0.0
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Note1Blue1"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "armB1"
+            "name": "arm1tempshoot"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
+            "waitTime": 0
           }
         },
         {
@@ -42,13 +30,19 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.0
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note2Blue1"
+                  "pathName": "M_B3_ShortP1"
                 }
               },
               {
@@ -67,22 +61,16 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Path3Blue1"
+                  "pathName": "M_B3_ShortP2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "armFarB1"
+                  "name": "arm1temp"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
           }
         },
         {
@@ -92,15 +80,47 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "armDown"
+            "waitTime": 0
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Path4Blue1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "M_B3_ShortP3"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "armDown"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.8
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeSense"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]

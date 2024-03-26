@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
-      "y": 5.5
+      "x": 1.2788871226815193,
+      "y": 4.637491272129477
     },
-    "rotation": 0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "armforAuto2"
+            "name": "arm1temp"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -30,20 +36,26 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": " B1TMP2"
+                }
+              },
               {
                 "type": "named",
                 "data": {
                   "name": "IntakeSense"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TestAuto"
-                }
               }
             ]
           }
@@ -55,13 +67,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Blue2Note2"
+                  "pathName": "B1TMP3"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "armforAuto2"
+                  "name": "arm1temp"
                 }
               }
             ]
@@ -74,9 +86,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "armDown"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "B1TMP4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "armDown"
+                }
+              }
+            ]
           }
         }
       ]
