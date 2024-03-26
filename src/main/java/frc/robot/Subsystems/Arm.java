@@ -13,8 +13,48 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Arm extends SubsystemBase{
-double i = 1;
+public class Arm extends SubsystemBase {
+
+    private double camHeight = 16.40; // Limelight height from floor
+    private double camAngle = 33.0; // Limelight Camera mount angle
+    private double speakerTagHeight = 57.05; // AprilTag ID6 Height
+    private double ampTagHeight = 53.7; // AprilTag ID1 Height
+    private double setDisRobotToTag = 80; // Inch
+
+    // private double sourceID = 1;
+    // private double speakerID = 2;
+    // private double ampID = 3;
+    // private double stageID = 4;
+
+    private double actualDistance;
+
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ry = table.getEntry("ry");
+    NetworkTableEntry ta = table.getEntry("ta");
+    NetworkTableEntry tv = table.getEntry("tv");
+    NetworkTableEntry tID = table.getEntry("tid");
+
+    private double targetX;
+    private double targetY;
+    private double targetRY;
+    private double targetA;
+    private int targetV;
+    private int targetID;
+
+    final double kP = 0.02;
+
+    double error = 0;
+    double output = 0;
+
+    double setAngle = 25;
+    double lastDistance;
+    double angle;
+    // End Limelight -----------------
+
+    double i = 1;
     public CANSparkMax l_Up;
     public SparkPIDController l_Up_pid;
     // public RelativeEncoder l_Up_enc;
@@ -158,16 +198,15 @@ double i = 1;
         }
     }
 
-    public void armTo(double sp){// Amp is 4.211 for left n 4.248 for right 243 deg
-        double pos = (((Math.toDegrees(l_UpAbsoluteEncoder.getPosition()) + Math.toDegrees(r_UpAbsoluteEncoder.getPosition())))/2.0);
-        if(pos> sp+10){
-            l_Up.set(-0.7);
-            r_Up.set(-0.7);
-        }
-        else if(pos< sp-10){
-            l_Up.set(0.7);
-            r_Up.set(0.7);
-
+    public void armToforauto(double sp, double power) {// Amp is 4.211 for left n 4.248 for right 243 deg
+        double pos = (((Math.toDegrees(l_UpAbsoluteEncoder.getPosition())
+                + Math.toDegrees(r_UpAbsoluteEncoder.getPosition()))) / 2.0);
+        if (pos > sp + 10) {
+            l_Up.set(-power);
+            r_Up.set(-power);
+        } else if (pos < sp - 10) {
+            l_Up.set(power);
+            r_Up.set(power);
 
         } else {
             l_Up.set(0);
@@ -192,13 +231,12 @@ double i = 1;
         double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition())
                 + Math.toDegrees(r_UpAbsoluteEncoder.getPosition())) / 2;
 
-    if(pos <180){
-        l_Up.set(speed);
-        r_Up.set(speed);
-    }
-    else{
-        l_Up.set(0);
-        r_Up.set(0);
+        if (pos < 180) {
+            l_Up.set(speed);
+            r_Up.set(speed);
+        } else {
+            l_Up.set(0);
+            r_Up.set(0);
         }
     }
 
@@ -213,5 +251,71 @@ double i = 1;
             l_Up.set(0);
             r_Up.set(0);
         }
+    }
+
+    public void ll2SetArm() {
+        targetX = tx.getDouble(0.0);
+        targetY = ty.getDouble(0.0);
+        targetA = ta.getDouble(0.0);
+        targetV = (int) tv.getInteger(0);
+        targetID = (int) tID.getInteger(0);
+
+        if (targetV != 0) {
+
+            if (targetID == 4 || targetID == 7) {
+                actualDistance = (speakerTagHeight - camHeight) / Math.tan(Math.toRadians(camAngle + targetY));
+            }
+            // if (targetID == 1) {
+            //     actualDistance = (ampTagHeight - camHeight) / Math.tan(Math.toRadians(camAngle + targetY));
+            // }
+            // actualDistance = actualDistance * 39.37;
+
+            // r_Up_enc.setPosition(Math.abs(actualDistance));
+
+            double pos = Math.toDegrees(r_UpAbsoluteEncoder.getPosition());
+
+            // double error = angle - r_UpAbsoluteEncoder.getPosition();
+            // double output = Math.abs(kP * error); // + kI * errorSum + kD * errorRate;
+
+            // SmartDashboard.putNumber("9692 Power", output);
+
+            lastDistance = actualDistance - 36;
+            lastDistance = lastDistance * 0.268;
+            angle = lastDistance + setAngle + 66;
+
+            error = angle - pos;
+            output = Math.abs(error * kP);
+
+            SmartDashboard.putNumber("Absolute Encoder Values sss", pos);
+            SmartDashboard.putNumber("9692 ActualDistance  is ssss: ", actualDistance);
+            SmartDashboard.putNumber("9692 LastDistance  is ssss: ", lastDistance);
+            SmartDashboard.putNumber("9692 Angle amde sss: ", angle);
+
+            if (pos < angle + 1 && pos > angle - 1) {
+                upwithabsenc(0.0);
+            } else if ((pos > angle + 1) && (pos >= 66) && actualDistance >= 36 && actualDistance <= 150
+                    && lastDistance >= 0) { // 35
+
+                // r_Up_enc.setPosition(actualDistance);
+                // Arm Down
+                downwithabsenc(output);
+            } else if ((pos < angle - 1) && (pos < 143.552) && actualDistance <= 150 && actualDistance >= 36
+                    && lastDistance >= 0) { // 150
+
+                // r_Up_enc.setPosition(actualDistance);
+                // Arm Up
+                upwithabsenc(output);
+            } else {
+
+                upwithabsenc(0.0);
+            }
+        } else if (Math.toDegrees(r_UpAbsoluteEncoder.getPosition()) > 66) {
+
+            downwithabsenc(0.3);
+        } else {
+
+            downwithabsenc(0.0);
+        }
+
     }
 }
