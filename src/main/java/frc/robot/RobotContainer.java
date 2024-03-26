@@ -119,11 +119,14 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   new JoystickButton(m_driverController2, Button.kR1.value)
   .onTrue((intake3));
 
+  new JoystickButton(m_driverController2, Button.kCircle.value)
+  .whileTrue(new RunCommand(() -> mech.ll2SetArm(), mech));//arm with limelight
+
   new JoystickButton(m_driverController2, Button.kCross.value)
   .onTrue(new RunCommand(() -> mech.armTo(168), mech));
   
   new JoystickButton(m_driverController2, Button.kL1.value)
-  .onTrue(new RunCommand(() -> mech.armTo(67.5), mech)); 
+  .onTrue(new RunCommand(() -> mech.armTo(66), mech)); 
   
   new JoystickButton(m_driverController2, Button.kSquare.value)
   .onTrue(new RunCommand(() -> mech.armToforauto(91.5, 0.55), mech));
