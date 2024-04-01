@@ -75,7 +75,7 @@ public double offset;
 
     NamedCommands.registerCommand("armB_one", new ArmCmd(mech, 98));
     
-    NamedCommands.registerCommand("armDown", new ArmCmd(mech, 62));
+    NamedCommands.registerCommand("armDown", new ArmCmd(mech, 68));
 
     NamedCommands.registerCommand("armforAuto2", new ArmCmd(mech, 91.5));
     NamedCommands.registerCommand("armFar", new ArmCmd(mech, 106));
@@ -123,7 +123,7 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   .onTrue(new RunCommand(() -> mech.armTo(168), mech));
   
   new JoystickButton(m_driverController2, Button.kL1.value)
-  .onTrue(new RunCommand(() -> mech.armTo(67.5), mech)); 
+  .onTrue(new RunCommand(() -> mech.armTo(69.5), mech)); 
   
   new JoystickButton(m_driverController2, Button.kSquare.value)
   .onTrue(new RunCommand(() -> mech.armToforauto(91.5, 0.55), mech));

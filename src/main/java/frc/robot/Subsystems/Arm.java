@@ -129,7 +129,7 @@ public class Arm extends SubsystemBase {
     public void armDown(double B1) {
         double pos = (((Math.toDegrees(l_UpAbsoluteEncoder.getPosition())
                 + Math.toDegrees(r_UpAbsoluteEncoder.getPosition()))) / 2.0);
-        if (pos > 66) {
+        if (pos > 68) {
             l_Up.set(-(B1)); // -(b1-0)
             r_Up.set(-(B1));
         } // (b1-0)
@@ -185,11 +185,11 @@ public class Arm extends SubsystemBase {
          }
          */       
         if (pos > sp + 10) {
-            l_Up.set(-0.9);
-            r_Up.set(-0.9);
+            l_Up.set(-0.6);
+            r_Up.set(-0.6);
         } else if (pos < sp - 10) {
-            l_Up.set(0.9);
-            r_Up.set(0.9);
+            l_Up.set(0.6);
+            r_Up.set(0.6);
 
         } else {
             l_Up.set(0);
@@ -228,8 +228,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void upwithabsenc(double speed) {
-        double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition())
-                + Math.toDegrees(r_UpAbsoluteEncoder.getPosition())) / 2;
+        double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition())+ Math.toDegrees(r_UpAbsoluteEncoder.getPosition())) / 2;
 
         if (pos < 180) {
             l_Up.set(speed);
@@ -241,9 +240,8 @@ public class Arm extends SubsystemBase {
     }
 
     public void downwithabsenc(double speed) {
-        double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition())
-                + Math.toDegrees(r_UpAbsoluteEncoder.getPosition())) / 2;
-        if (pos > 66) {
+        double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition())+ Math.toDegrees(r_UpAbsoluteEncoder.getPosition())) / 2;
+        if (pos > 69) {
 
             l_Up.set(-speed);
             r_Up.set(-speed);
@@ -262,7 +260,7 @@ public class Arm extends SubsystemBase {
 
         if (targetV != 0) {
 
-            if (targetID == 4 || targetID == 7) {
+            if (targetID == 4 || targetID == 7 || targetID == 6) {
                 actualDistance = (speakerTagHeight - camHeight) / Math.tan(Math.toRadians(camAngle + targetY));
             }
             // if (targetID == 1) {
@@ -285,6 +283,8 @@ public class Arm extends SubsystemBase {
 
             error = angle - pos;
             output = Math.abs(error * kP);
+
+            
 
             SmartDashboard.putNumber("Absolute Encoder Values sss", pos);
             SmartDashboard.putNumber("9692 ActualDistance  is ssss: ", actualDistance);
@@ -309,7 +309,7 @@ public class Arm extends SubsystemBase {
 
                 upwithabsenc(0.0);
             }
-        } else if (Math.toDegrees(r_UpAbsoluteEncoder.getPosition()) > 66) {
+        } else if (Math.toDegrees(r_UpAbsoluteEncoder.getPosition()) > 68) {
 
             downwithabsenc(0.3);
         } else {
