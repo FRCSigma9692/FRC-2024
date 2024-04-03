@@ -3,10 +3,13 @@ package frc.robot.Subsystems;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -65,6 +68,19 @@ public class Arm extends SubsystemBase {
     // public RelativeEncoder r_Up_enc;
     public AbsoluteEncoder r_UpAbsoluteEncoder;
 
+    public double Acceleration;
+    public double Deceleration;
+    public double currentpos;
+    public double desiredstate; 
+    public double minpov =0;
+    public double maxpov=10;
+
+//     TrapezoidProfile profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(1,0.8));
+    
+//     TrapezoidProfile.State currentState = new TrapezoidProfile.State(Math.toDegrees(67),0);
+// ;
+//     TrapezoidProfile.State desiredState;
+
     // initial height starts from 65
     public Arm() {
 
@@ -95,20 +111,23 @@ public class Arm extends SubsystemBase {
         l_Up_pid = l_Up.getPIDController();
         l_Up_pid.setFeedbackDevice(l_UpAbsoluteEncoder);
         l_Up.setIdleMode(IdleMode.kBrake);
-        l_Up_pid.setP(1);
-        l_Up_pid.setFF(0);
+        l_Up_pid.setP(1.3);
+        l_Up_pid.setD(0);
+        l_Up_pid.setFF(0.004);
         l_Up_pid.setPositionPIDWrappingEnabled(true);
         l_Up.burnFlash();
 
         r_Up = new CANSparkMax(10, MotorType.kBrushless);
         r_UpAbsoluteEncoder = r_Up.getAbsoluteEncoder(Type.kDutyCycle);
-        r_Up_pid = r_Up.getPIDController();
-        r_Up_pid.setFeedbackDevice(r_UpAbsoluteEncoder);
+        // r_Up_pid = r_Up.getPIDController();
+        // r_Up_pid.setFeedbackDevice(r_UpAbsoluteEncoder);
         r_Up.setIdleMode(IdleMode.kBrake);
-        r_Up_pid.setP(1);
-        r_Up_pid.setFF(0);
-        r_Up_pid.setPositionPIDWrappingEnabled(true);
+        // r_Up_pid.setP(0.1);
+        // r_Up_pid.setFF(0);
+        // r_Up_pid.setPositionPIDWrappingEnabled(true);
+        r_Up.follow(l_Up, true);
         r_Up.burnFlash();
+
 
     }
 
@@ -170,31 +189,58 @@ public class Arm extends SubsystemBase {
     // }
     // }
 
-    public void armTo(double sp) {// Amp is 4.211 for left n 4.248 for right 243 deg
-        double pos = (((Math.toDegrees(l_UpAbsoluteEncoder.getPosition())
-                + Math.toDegrees(r_UpAbsoluteEncoder.getPosition()))) / 2.0);
+    public void armTo(double degree) {// Amp is 4.211 for left n 4.248 for right 243 deg
+        // double pos = (((Math.toDegrees(l_UpAbsoluteEncoder.getPosition())
+        //         + Math.toDegrees(r_UpAbsoluteEncoder.getPosition()))) / 2.0);
 
-         /*
-         if(pos>sp+25){
-            l_Up.set(-0.9);
-            r_Up.set(-0.9);
-         }
-         else if(pos<sp-25){
-            l_Up.set(0.9);
-            r_Up.set(0.9);
-         }
-         */       
-        if (pos > sp + 10) {
-            l_Up.set(-0.6);
-            r_Up.set(-0.6);
-        } else if (pos < sp - 10) {
-            l_Up.set(0.6);
-            r_Up.set(0.6);
+        // desiredState = new TrapezoidProfile.State(sp,0);
+        // var setpoint = profile.calculate(0.002, currentState, desiredState);
+      
+        // l_Up_pid.setReference(Math.toRadians(setpoint.position), ControlType.kPosition); //ALWAYS USE RADIANS FOR SETREF!!
+        l_Up_pid.setReference(Math.toRadians(degree), ControlType.kPosition); //ALWAYS USE RADIANS FOR SETREF!!
+        // r_Up_pid.setReference(sp, ControlType.kPosition);
+        // if (pos > sp + 10) {
+        //     l_Up.set(-0.6);
+        //     r_Up.set(-0.6);
+        // } else if (pos < sp - 10) {
+        //     l_Up.set(0.6);
+        //     r_Up.set(0.6);
 
-        } else {
-            l_Up.set(0);
-            r_Up.set(0);
-            SmartDashboard.putString("DOWN", "DOWN");
+        // } else {
+        //     l_Up.set(0);
+        //     r_Up.set(0);
+        //     SmartDashboard.putString("DOWN", "DOWN");
+        // }
+
+    }
+
+    public void ArmMotion(double setpoint){
+        double curpos = l_UpAbsoluteEncoder.getPosition(); 
+        double error = setpoint - curpos;
+        double kp = 0.01;
+        double Accel_decel_val = (error)*0.3;
+        //stage 1
+        double Acceleration = curpos + Accel_decel_val;
+        double Accelpow = 0.02;
+
+        //stage 2
+        double Stablepow = 0.4;
+
+        //stage 3
+        double Deceleration = error;
+        double Decelpow = Stablepow * Deceleration;
+
+        if(curpos <= Acceleration){
+            l_Up.set(Accelpow);
+            if(Accelpow<0.4){
+            Accelpow +=0.01;
+            }
+        }
+        else if(curpos >= Acceleration || curpos <= Deceleration){
+                l_Up.set(Stablepow);
+        }
+        else if(curpos <= Deceleration ){
+            l_Up.set(Decelpow);
         }
     }
 
@@ -232,10 +278,10 @@ public class Arm extends SubsystemBase {
 
         if (pos < 180) {
             l_Up.set(speed);
-            r_Up.set(speed);
+            // r_Up.set(speed);
         } else {
             l_Up.set(0);
-            r_Up.set(0);
+            // r_Up.set(0);
         }
     }
 
@@ -244,10 +290,10 @@ public class Arm extends SubsystemBase {
         if (pos > 69) {
 
             l_Up.set(-speed);
-            r_Up.set(-speed);
+            // r_Up.set(-speed);
         } else {
             l_Up.set(0);
-            r_Up.set(0);
+            // r_Up.set(0);
         }
     }
 
@@ -284,7 +330,7 @@ public class Arm extends SubsystemBase {
             error = angle - pos;
             output = Math.abs(error * kP);
 
-            
+
 
             SmartDashboard.putNumber("Absolute Encoder Values sss", pos);
             SmartDashboard.putNumber("9692 ActualDistance  is ssss: ", actualDistance);
@@ -318,4 +364,6 @@ public class Arm extends SubsystemBase {
         }
 
     }
+
+    
 }

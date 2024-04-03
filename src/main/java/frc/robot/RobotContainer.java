@@ -31,6 +31,7 @@ import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Arm;
 import frc.robot.commands.ArmCmd;
+import frc.robot.commands.ArmProfileCmd;
 import frc.robot.commands.ArmShootCmd;
 // import frc.robot.commands.IntakeCmd;
 import frc.robot.commands.SensorIntakeCmd;
@@ -120,13 +121,13 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   .onTrue((intake3));
 
   new JoystickButton(m_driverController2, Button.kCross.value)
-  .onTrue(new RunCommand(() -> mech.armTo(168), mech));
+  .onTrue(new ArmProfileCmd(mech, 168, 0.005,0.3));//new RunCommand(() -> mech.armTo(91.5), mech)); //0.55
   
   new JoystickButton(m_driverController2, Button.kL1.value)
-  .onTrue(new RunCommand(() -> mech.armTo(69.5), mech)); 
+  .onTrue(new ArmProfileCmd(mech, 69.5, 0.005,0.3));//new RunCommand(() -> mech.armTo(91.5), mech)); //0.55
   
   new JoystickButton(m_driverController2, Button.kSquare.value)
-  .onTrue(new RunCommand(() -> mech.armToforauto(91.5, 0.55), mech));
+  .onTrue(new ArmProfileCmd(mech, 91.5, 0.005,0.3));//new RunCommand(() -> mech.armTo(91.5), mech)); //0.55
 
   new JoystickButton(m_driverController2, Button.kCircle.value)
   .whileTrue(new RunCommand(() -> mech.ll2SetArm(), mech));

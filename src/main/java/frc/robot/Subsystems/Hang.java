@@ -40,22 +40,24 @@ public class Hang extends SubsystemBase{
             HangL.set(B1);
     }
     public void set(double JL, double JR){
-       if(JL > 0.1 && ((Enc_L.getPosition())< 320)){
-    
+       if(JL > 0.1 && ((Enc_L.getPosition())< 320))
+        {
         HangL.set(0.95);
        }
-       else if(JL < -0.1 && ((Enc_L.getPosition())>3)){
-        
+       else if(JL < -0.1 && ((Enc_L.getPosition())>3))
+       {
         HangL.set(-0.95);
        }
        else{
         HangL.set(0);
        }
 
-       if(JR > 0.1 && ((Enc_R.getPosition())>-320)){
+       if(JR > 0.1 && ((Enc_R.getPosition())>-320))
+       {
         HangR.set(-0.95);
        }
-       else if(JR < -0.1 && ((Enc_R.getPosition())<-3)){
+       else if(JR < -0.1 && ((Enc_R.getPosition())<-3))
+       {
         HangR.set(0.95);
        }
        else{
