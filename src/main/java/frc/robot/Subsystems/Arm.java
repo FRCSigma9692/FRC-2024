@@ -113,7 +113,7 @@ public class Arm extends SubsystemBase {
         l_Up.setIdleMode(IdleMode.kBrake);
         l_Up_pid.setP(1.3);
         l_Up_pid.setD(0);
-        l_Up_pid.setFF(0.004);
+        l_Up_pid.setFF(0.002);
         l_Up_pid.setPositionPIDWrappingEnabled(true);
         l_Up.burnFlash();
 
@@ -136,7 +136,6 @@ public class Arm extends SubsystemBase {
                 + Math.toDegrees(r_UpAbsoluteEncoder.getPosition()))) / 2.0);
         if (pos < 180) {
             l_Up.set((B1)); // -(b1-0)
-            r_Up.set((B1));
         } // (b1-0)
         else {
             l_Up.set(0);
@@ -146,15 +145,14 @@ public class Arm extends SubsystemBase {
     }
 
     public void armDown(double B1) {
-        double pos = (((Math.toDegrees(l_UpAbsoluteEncoder.getPosition())
-                + Math.toDegrees(r_UpAbsoluteEncoder.getPosition()))) / 2.0);
-        if (pos > 68) {
-            l_Up.set(-(B1)); // -(b1-0)
-            r_Up.set(-(B1));
-        } // (b1-0)
+        double pos = Math.toDegrees(l_UpAbsoluteEncoder.getPosition());
+        if (pos > 69) {
+            // double pow = B1/(pos-76);
+            l_Up.set(-(B1*(pos-68)*0.009));
+        }
         else {
             l_Up.set(0);
-            r_Up.set(0);
+            // r_Up.set(0);
         }
     }
 
@@ -286,8 +284,8 @@ public class Arm extends SubsystemBase {
     }
 
     public void downwithabsenc(double speed) {
-        double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition())+ Math.toDegrees(r_UpAbsoluteEncoder.getPosition())) / 2;
-        if (pos > 69) {
+        double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+        if (pos > 75) {
 
             l_Up.set(-speed);
             // r_Up.set(-speed);

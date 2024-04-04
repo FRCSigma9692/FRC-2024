@@ -134,7 +134,7 @@ SmartDashboard.putNumber("LimelightArea", area);
       m_autonomousCommand.cancel();
     }
    m_robotContainer.mech.setDefaultCommand(
-     new RunCommand(() -> m_robotContainer.mech.armTo(Math.toDegrees(m_robotContainer.mech.l_UpAbsoluteEncoder.getPosition())) , m_robotContainer.mech));
+     new RunCommand(() -> m_robotContainer.mech.upwithabsenc(0),m_robotContainer.mech));//(Math.toDegrees(m_robotContainer.mech.l_UpAbsoluteEncoder.getPosition())) , m_robotContainer.mech));
       
     
       m_robotContainer.shooter.setDefaultCommand(

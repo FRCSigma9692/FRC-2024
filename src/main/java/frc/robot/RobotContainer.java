@@ -121,13 +121,13 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   .onTrue((intake3));
 
   new JoystickButton(m_driverController2, Button.kCross.value)
-  .onTrue(new ArmProfileCmd(mech, 168, 0.005,0.3));//new RunCommand(() -> mech.armTo(91.5), mech)); //0.55
+  .onTrue(new RunCommand(() -> mech.armTo(168), mech)); //0.55
   
   new JoystickButton(m_driverController2, Button.kL1.value)
-  .onTrue(new ArmProfileCmd(mech, 69.5, 0.005,0.3));//new RunCommand(() -> mech.armTo(91.5), mech)); //0.55
+  .onTrue(new RunCommand(()-> mech.armDown(0.6), mech));//new RunCommand(() -> mech.armTo(91.5), mech)); //0.55
   
   new JoystickButton(m_driverController2, Button.kSquare.value)
-  .onTrue(new ArmProfileCmd(mech, 91.5, 0.005,0.3));//new RunCommand(() -> mech.armTo(91.5), mech)); //0.55
+  .onTrue(new RunCommand(() -> mech.armTo(91.5), mech)); //0.55
 
   new JoystickButton(m_driverController2, Button.kCircle.value)
   .whileTrue(new RunCommand(() -> mech.ll2SetArm(), mech));

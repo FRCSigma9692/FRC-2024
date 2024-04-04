@@ -20,11 +20,12 @@ public class ArmProfileCmd extends Command{
     double pos;
 
     double dist;
-    public ArmProfileCmd(Arm arm, double setPoint, double accelRate,double accelDist){
+    public ArmProfileCmd(Arm arm, double setPoint, double accelRate,double accelDist, double decelDist){
         this.arm = arm;
         sp = setPoint;
         this.accelRate = accelRate;
         dist = accelDist;
+        this.decelDist = decelDist;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class ArmProfileCmd extends Command{
         pos = curpos;
         error  = sp-curpos;
         accelDist = curpos + (error*dist);
-        decelDist = sp - (error*dist);
+        decelDist = sp - (error*decelDist);
         stablepow = 0.6;
     }
 
@@ -49,7 +50,7 @@ public class ArmProfileCmd extends Command{
             if(curpos <= accelDist){
 
                 if(Accelpow<0.6){   
-                Accelpow = 0.035 * (curpos - 65);
+                Accelpow = 0.035 * (curpos - (pos-3));
                 Attainedspeed = arm.l_Up.get();
                 SmartDashboard.putString("Phase","Acceleration" );                
                 }
@@ -82,7 +83,7 @@ public class ArmProfileCmd extends Command{
             if(curpos >= accelDist){
             
             if(-Accelpow>-0.6){
-            Accelpow = 0.035 * (pos - curpos);
+            Accelpow = 0.035 * (pos+3 - curpos);
                 
                 SmartDashboard.putString("Phase","AccelerationDown" );
             }
@@ -93,12 +94,6 @@ public class ArmProfileCmd extends Command{
             Attainedspeed = arm.l_Up.get();
             }
             else if(curpos <= accelDist && curpos>= decelDist){
-            //         arm.l_Up.set(Stablepow);
-            // }
-            // else if(curpos <= Deceleration ){
-            //     arm.l_Up.set(Decelpow);
-            // }
-            // SmartDashboard.getString("status", "Executed");
             arm.l_Up.set(Attainedspeed);
             SmartDashboard.putString("Phase","stableDown" ); 
         }
