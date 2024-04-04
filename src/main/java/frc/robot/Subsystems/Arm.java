@@ -23,6 +23,7 @@ public class Arm extends SubsystemBase {
     private double speakerTagHeight = 57.05; // AprilTag ID6 Height
     private double ampTagHeight = 53.7; // AprilTag ID1 Height
     private double setDisRobotToTag = 80; // Inch
+    public double pos;
 
     // private double sourceID = 1;
     // private double speakerID = 2;
@@ -127,6 +128,7 @@ public class Arm extends SubsystemBase {
         // r_Up_pid.setPositionPIDWrappingEnabled(true);
         r_Up.follow(l_Up, true);
         r_Up.burnFlash();
+        pos = Math.toDegrees(l_UpAbsoluteEncoder.getPosition());
 
 
     }
@@ -146,7 +148,7 @@ public class Arm extends SubsystemBase {
 
     public void armDown(double B1) {
         double pos = Math.toDegrees(l_UpAbsoluteEncoder.getPosition());
-        if (pos > 69) {
+         if (pos > 69) {
             // double pow = B1/(pos-76);
             l_Up.set(-(B1*(pos-68)*0.009));
         }
@@ -272,7 +274,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void upwithabsenc(double speed) {
-        double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition())+ Math.toDegrees(r_UpAbsoluteEncoder.getPosition())) / 2;
+        //double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
 
         if (pos < 180) {
             l_Up.set(speed);
@@ -281,10 +283,49 @@ public class Arm extends SubsystemBase {
             l_Up.set(0);
             // r_Up.set(0);
         }
+        pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+    }
+    public void UpwithReference() {
+        pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+        double val = 10;
+        pos = pos+val;
+        if (pos < 180) {
+            
+            l_Up_pid.setReference(Math.toRadians(pos), ControlType.kPosition);
+             SmartDashboard.putNumber("Position", pos);
+            
+            // r_Up.set(speed);
+        }// else {
+        //     l_Up.set(0);
+        //     // r_Up.set(0);
+        // }
+        pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+       
+    }
+    public void DownwithReference() {
+        pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+        double val = 10;
+        pos = pos-val;
+        if (pos > 67) {
+            
+            l_Up_pid.setReference(Math.toRadians(pos), ControlType.kPosition);
+             SmartDashboard.putNumber("Position", pos); 
+            // r_Up.set(speed);
+        }// else {
+        //     l_Up.set(0);
+        //     // r_Up.set(0);
+        // }
+        pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+       
+    }
+
+    public void defaultMode(){
+        l_Up_pid.setReference(Math.toRadians(pos), ControlType.kPosition);
+        SmartDashboard.putNumber("Position", pos);
     }
 
     public void downwithabsenc(double speed) {
-        double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+        // double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
         if (pos > 75) {
 
             l_Up.set(-speed);
@@ -293,6 +334,7 @@ public class Arm extends SubsystemBase {
             l_Up.set(0);
             // r_Up.set(0);
         }
+        pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
     }
 
     public void ll2SetArm() {
@@ -314,7 +356,7 @@ public class Arm extends SubsystemBase {
 
             // r_Up_enc.setPosition(Math.abs(actualDistance));
 
-            double pos = Math.toDegrees(r_UpAbsoluteEncoder.getPosition());
+            double pos = Math.toDegrees(l_UpAbsoluteEncoder.getPosition());
 
             // double error = angle - r_UpAbsoluteEncoder.getPosition();
             // double output = Math.abs(kP * error); // + kI * errorSum + kD * errorRate;
@@ -323,12 +365,13 @@ public class Arm extends SubsystemBase {
 
             lastDistance = actualDistance - 36;
             lastDistance = lastDistance * 0.268;
-            angle = lastDistance + setAngle + 66;
+            angle = lastDistance + setAngle + 69;
 
             error = angle - pos;
             output = Math.abs(error * kP);
 
-
+            if(output>=0.4)
+                output = 0.4;
 
             SmartDashboard.putNumber("Absolute Encoder Values sss", pos);
             SmartDashboard.putNumber("9692 ActualDistance  is ssss: ", actualDistance);
@@ -337,7 +380,7 @@ public class Arm extends SubsystemBase {
 
             if (pos < angle + 1 && pos > angle - 1) {
                 upwithabsenc(0.0);
-            } else if ((pos > angle + 1) && (pos >= 66) && actualDistance >= 36 && actualDistance <= 150
+            } else if ((pos > angle + 1) && (pos >= 69) && actualDistance >= 36 && actualDistance <= 150
                     && lastDistance >= 0) { // 35
 
                 // r_Up_enc.setPosition(actualDistance);
@@ -353,9 +396,7 @@ public class Arm extends SubsystemBase {
 
                 upwithabsenc(0.0);
             }
-        } else if (Math.toDegrees(r_UpAbsoluteEncoder.getPosition()) > 68) {
-
-            downwithabsenc(0.3);
+        
         } else {
 
             downwithabsenc(0.0);
@@ -363,5 +404,17 @@ public class Arm extends SubsystemBase {
 
     }
 
+    //     public void up(double increment) {
+    //     double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition())+ Math.toDegrees(r_UpAbsoluteEncoder.getPosition())) / 2;
+
+    //     if (pos < 180) {
+
+    //         l_Up_pid.setReference(speed);
+    //         // r_Up.set(speed);
+    //     } else {
+    //         l_Up.set(0);
+    //         // r_Up.set(0);
+    //     }
+    // }
     
 }

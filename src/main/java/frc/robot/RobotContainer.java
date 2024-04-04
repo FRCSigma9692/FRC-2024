@@ -107,7 +107,7 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
   .whileTrue(new RunCommand(() -> robot.gyro.reset(), robot));
   
   new JoystickButton(m_driverController, Button.kTriangle.value)
-  .whileTrue(new RunCommand(() -> shooter.runShooter(0.6,0), shooter));
+  .whileTrue(new RunCommand(() -> shooter.runShooter(0.7,0), shooter));
   
   new Trigger(() -> m_driverController.getRightTriggerAxis()>0.7)
   .whileTrue(new RunCommand(() -> shooter.runShooter(0.6,0), shooter)); 
@@ -139,12 +139,16 @@ SmartDashboard.putData("Auto Chooser", autoChooser);
     //POV
 
     new POVButton(m_driverController2, 0)
-    .whileTrue(new RunCommand(()-> mech.upwithabsenc(0.35), mech));
-     new POVButton(m_driverController2, 180)
-    .whileTrue(new RunCommand(()-> mech.downwithabsenc(0.35), mech));
+    .whileTrue(new RunCommand(()-> mech.upwithabsenc(0.6), mech));
+    
+    new POVButton(m_driverController2, 180)
+    .whileTrue(new RunCommand(()-> mech.downwithabsenc(0.6), mech));
 
     new POVButton(m_driverController2, 90)
     .whileTrue(new RunCommand(() -> shooter.runShooter(0, 0.1), shooter));
+
+    new POVButton(m_driverController2, 270)
+    .onTrue(new RunCommand(() -> mech.armTo(120), mech));
 
     //Triggers
     new Trigger(() -> m_driverController2.getLeftTriggerAxis()>0.05)

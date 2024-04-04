@@ -10,7 +10,6 @@ public class ArmProfileCmd extends Command{
     double curpos;
     double error;
     double accelDist;
-    double accelRate;
     double Accelpow;
     double decelDist;
     double decelRate;
@@ -20,10 +19,9 @@ public class ArmProfileCmd extends Command{
     double pos;
 
     double dist;
-    public ArmProfileCmd(Arm arm, double setPoint, double accelRate,double accelDist, double decelDist){
+    public ArmProfileCmd(Arm arm, double setPoint,double accelDist, double decelDist){
         this.arm = arm;
         sp = setPoint;
-        this.accelRate = accelRate;
         dist = accelDist;
         this.decelDist = decelDist;
     }
