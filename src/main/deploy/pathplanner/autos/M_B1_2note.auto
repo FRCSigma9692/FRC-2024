@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.2788871226815193,
-      "y": 4.637491272129477
+      "x": 0.7636103146671328,
+      "y": 6.86
     },
     "rotation": 60.0
   },
@@ -45,12 +45,6 @@
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": " B1TMP2"
-                }
-              },
               {
                 "type": "named",
                 "data": {

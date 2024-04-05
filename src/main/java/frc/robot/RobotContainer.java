@@ -33,9 +33,11 @@ import frc.robot.Subsystems.Arm;
 import frc.robot.commands.ArmCmd;
 import frc.robot.commands.ArmProfileCmd;
 import frc.robot.commands.ArmShootCmd;
+import frc.robot.commands.Drivecmd;
 // import frc.robot.commands.IntakeCmd;
 import frc.robot.commands.SensorIntakeCmd;
 import frc.robot.commands.Sensorbtnintake;
+import frc.robot.commands.Shootcontinuecmd;
 import frc.robot.commands.ShooterCmd;
 
 public class RobotContainer {
@@ -48,8 +50,11 @@ public class RobotContainer {
   public Arm mech = new Arm();
   public Hang hanger = new Hang();
   public ShooterCmd Shoot = new ShooterCmd(shooter, intake, 1.7, 0.9, 0.75,0.9); 
+  public Shootcontinuecmd ShootContinue = new Shootcontinuecmd(shooter, intake, 14, 0.9, 0.5,0.9); 
  public SensorIntakeCmd intake_and_sense = new SensorIntakeCmd(intake, 0.8, intake.sensor , 4 );
+
   // public SensorIntakeCmd intake2 = new SensorIntakeCmd(intake, 0.8, intake.sensor , 10 );
+  public Drivecmd drivecmd = new Drivecmd(robot);
    public Sensorbtnintake intake3 = new Sensorbtnintake(intake, 0.9, intake.sensor );
 
 
@@ -67,7 +72,7 @@ public double offset;
     NamedCommands.registerCommand("shoot", Shoot);
     NamedCommands.registerCommand("arm", new ArmCmd(mech, 98));
     NamedCommands.registerCommand("Q59_Shoot", new ShooterCmd(shooter, intake, 2.5, 0, 0.22, 0.7));
-
+    NamedCommands.registerCommand("Shootcontinue", ShootContinue);
     NamedCommands.registerCommand("armB1", new ArmCmd(mech, 104));
     NamedCommands.registerCommand("arm1temp", new ArmShootCmd(mech, 90));
     NamedCommands.registerCommand("arm1tempshoot", new ParallelCommandGroup(new ArmShootCmd(mech, 90), new ShooterCmd(shooter,  intake, 2, 1.5, 0.75, 0.9)));
@@ -80,11 +85,12 @@ public double offset;
 
     NamedCommands.registerCommand("armforAuto2", new ArmCmd(mech, 91.5));
     NamedCommands.registerCommand("armFar", new ArmCmd(mech, 106));
+    NamedCommands.registerCommand("Brakemod",drivecmd);
 
-        NamedCommands.registerCommand("armFarB3", new ArmCmd(mech, 108.5));
+    NamedCommands.registerCommand("armFarB3", new ArmCmd(mech, 108.5));
     NamedCommands.registerCommand("IntakeSense", new SensorIntakeCmd(intake, 0.7, intake.sensor, 4.5));
     autoChooser = AutoBuilder.buildAutoChooser("Blue1");
-SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureBindings();
      
