@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 2.57,
-        "y": 4.11
+        "y": 4.15
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4106271819676304,
-        "y": 4.484746769465009
+        "x": 1.4106271819676306,
+        "y": 4.524746769465009
       },
       "isLocked": false,
       "linkedName": null
@@ -32,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 2.7,
+    "maxAcceleration": 1.8,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -45,7 +45,7 @@
   "reversed": false,
   "folder": "M_B1_2note & TMP",
   "previewStartingState": {
-    "rotation": -9.24611274556318,
+    "rotation": 6.639915890365346,
     "velocity": 0
   },
   "useDefaultConstraints": false

@@ -33,7 +33,8 @@ public class ArmCmd extends Command{
 
     @Override
     public boolean isFinished(){
-        if(arm.l_Up.get() ==0 && arm.r_Up.get() == 0)
+        if(Math.toDegrees(arm.l_UpAbsoluteEncoder.getPosition()) >= sp-2 || Math.toDegrees(arm.l_UpAbsoluteEncoder.getPosition()) >= sp+2 ) 
+        // if(arm.l_Up.get() ==0 && arm.r_Up.get() == 0)
         return true;
         else
         return false;

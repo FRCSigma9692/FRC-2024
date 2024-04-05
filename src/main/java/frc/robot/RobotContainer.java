@@ -31,9 +31,11 @@ import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Shooter;
 import frc.robot.Subsystems.Arm;
 import frc.robot.commands.ArmCmd;
-import frc.robot.commands.ArmProfileCmd;
+import frc.robot.commands.ArmDown;
+// import frc.robot.commands.ArmProfileCmd;
 import frc.robot.commands.ArmShootCmd;
 import frc.robot.commands.Drivecmd;
+import frc.robot.commands.IntakeCmd;
 // import frc.robot.commands.IntakeCmd;
 import frc.robot.commands.SensorIntakeCmd;
 import frc.robot.commands.Sensorbtnintake;
@@ -50,7 +52,7 @@ public class RobotContainer {
   public Arm mech = new Arm();
   public Hang hanger = new Hang();
   public ShooterCmd Shoot = new ShooterCmd(shooter, intake, 1.7, 0.9, 0.75,0.9); 
-  public Shootcontinuecmd ShootContinue = new Shootcontinuecmd(shooter, intake, 14, 0.9, 0.5,0.9); 
+  public Shootcontinuecmd ShootContinue = new Shootcontinuecmd(shooter, intake, 14, 0.9, 0.3,0.9); 
  public SensorIntakeCmd intake_and_sense = new SensorIntakeCmd(intake, 0.8, intake.sensor , 4 );
 
   // public SensorIntakeCmd intake2 = new SensorIntakeCmd(intake, 0.8, intake.sensor , 10 );
@@ -77,11 +79,16 @@ public double offset;
     NamedCommands.registerCommand("arm1temp", new ArmShootCmd(mech, 90));
     NamedCommands.registerCommand("arm1tempshoot", new ParallelCommandGroup(new ArmShootCmd(mech, 90), new ShooterCmd(shooter,  intake, 2, 1.5, 0.75, 0.9)));
 
+    NamedCommands.registerCommand("IntakeContinue",new IntakeCmd(intake, 1, 0.9));
     NamedCommands.registerCommand("armFarB1", new ArmCmd(mech, 105));
 
+    NamedCommands.registerCommand("Arm1up", new ShooterCmd(shooter, intake, 1.7, 0.9, 0.65,0.9));
     NamedCommands.registerCommand("armB_one", new ArmCmd(mech, 98));
+
+    NamedCommands.registerCommand("ArmforMiddle", new ArmCmd(mech, 98));
+
     
-    NamedCommands.registerCommand("armDown", new ArmCmd(mech, 68));
+    NamedCommands.registerCommand("armDown", new ArmDown(mech, 67));
 
     NamedCommands.registerCommand("armforAuto2", new ArmCmd(mech, 91.5));
     NamedCommands.registerCommand("armFar", new ArmCmd(mech, 106));

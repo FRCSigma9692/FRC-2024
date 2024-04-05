@@ -35,7 +35,7 @@ public void execute(){
     shooter.runShooter(shooter_pow, 0); //0.7
 // if(timer.get()>delay) //0.75
 //{ 
-    intake.intake(0, intake_pow); //0.9
+    // intake.intake(0, intake_pow); //0.9
 //}
     System.out.println(timer.get());
 
