@@ -76,35 +76,8 @@ public class Arm extends SubsystemBase {
     public double minpov =0;
     public double maxpov=10;
 
-//     TrapezoidProfile profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(1,0.8));
-    
-//     TrapezoidProfile.State currentState = new TrapezoidProfile.State(Math.toDegrees(67),0);
-// ;
-//     TrapezoidProfile.State desiredState;
-
     // initial height starts from 65
     public Arm() {
-
-        // //for relative encoder
-        // r_Up = new CANSparkMax(9, MotorType.kBrushless);
-        // r_Up_enc = r_Up.getEncoder();
-        // r_Up_pid = r_Up.getPIDController();
-        // r_Up_pid.setFeedbackDevice(r_Up_enc);
-        // r_Up.setIdleMode(IdleMode.kBrake);
-        // // r_Up_pid.setP(2);
-        // // r_Up_pid.setFF(2);
-        // r_Up_pid.setPositionPIDWrappingEnabled(true);
-        // r_Up.burnFlash();
-
-        // l_Up = new CANSparkMax(10, MotorType.kBrushless);
-        // l_Up_enc = l_Up.getEncoder();
-        // l_Up_pid = l_Up.getPIDController();
-        // l_Up_pid.setFeedbackDevice(l_Up_enc);
-        // l_Up.setIdleMode(IdleMode.kBrake);
-        // // l_Up_pid.setP(2);
-        // // l_Up_pid.setFF(2);
-        // l_Up_pid.setPositionPIDWrappingEnabled(true);
-        // l_Up.burnFlash();
 
         // for absolute encodder
         l_Up = new CANSparkMax(9, MotorType.kBrushless);
@@ -147,47 +120,19 @@ public class Arm extends SubsystemBase {
     }
 
     public void armDown(double B1) {
-        double pos = Math.toDegrees(l_UpAbsoluteEncoder.getPosition());
-         if (pos > 69) {
+        pos = Math.toDegrees(l_UpAbsoluteEncoder.getPosition());
+        if(pos>95){
+            l_Up.set(-(B1));
+        }
+        else if (pos<95 && pos > 69) {
             // double pow = B1/(pos-76);
-            l_Up.set(-(B1*(pos-68)*0.009));
+
+            l_Up.set(-(B1*(pos-68)*0.025));
         }
         else {
             l_Up.set(0);
-            // r_Up.set(0);
         }
     }
-
-    // public void armSource(){
-    // if((((Math.abs(l_UpAbsoluteEncoder.getPosition()) +
-    // Math.abs(r_UpAbsoluteEncoder.getPosition())))/2.0)>123){
-    // l_Up.set((0.5));
-    // r_Up.set(-(0.5));
-    // }
-    // else if((((Math.abs(l_UpAbsoluteEncoder.getPosition()) +
-    // Math.abs(r_UpAbsoluteEncoder.getPosition())))/2.0)<120){
-    // l_Up.set(-(0.9));
-    // r_Up.set((0.9));
-    // }
-    // else{
-    // l_Up.set(0);
-    // r_Up.set(0);
-    // SmartDashboard.putString("SRC","SRC");
-    // }
-    // }
-
-    // public void armDown(){
-    // if((((Math.abs(l_UpAbsoluteEncoder.getPosition()) +
-    // Math.abs(r_UpAbsoluteEncoder.getPosition())))/2.0)> 6){
-    // l_Up.set((0.75));
-    // r_Up.set(-(0.75));
-    // }
-    // else{
-    // l_Up.set(0);
-    // r_Up.set(0);
-    // SmartDashboard.putString("DOWN","DOWN");
-    // }
-    // }
 
     public void armTo(double degree) {// Amp is 4.211 for left n 4.248 for right 243 deg
         // double pos = (((Math.toDegrees(l_UpAbsoluteEncoder.getPosition())
@@ -284,6 +229,7 @@ public class Arm extends SubsystemBase {
             // r_Up.set(0);
         }
         pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+        SmartDashboard.putNumber("Position", pos);
     }
     public void UpwithReference() {
         pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
@@ -325,16 +271,30 @@ public class Arm extends SubsystemBase {
     }
 
     public void downwithabsenc(double speed) {
-        // double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
-        if (pos > 75) {
-
-            l_Up.set(-speed);
-            // r_Up.set(-speed);
-        } else {
-            l_Up.set(0);
-            // r_Up.set(0);
+        pos = Math.toDegrees(l_UpAbsoluteEncoder.getPosition());
+        if(pos>80){
+            l_Up.set(-(speed));
         }
+        else if (pos<80 && pos > 69) {
+            // double pow = B1/(pos-76);
+
+            l_Up.set(-(speed*(pos-68)*0.025));
+        }
+        else {
+            l_Up.set(0);
+        }
+        // double pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+        // if(pos>)
+        // if (pos > 69.5) {
+
+        //     l_Up.set(-speed);
+        //     // r_Up.set(-speed);
+        // } else {
+        //     l_Up.set(0);
+        //     // r_Up.set(0);
+        // }
         pos = (Math.toDegrees(l_UpAbsoluteEncoder.getPosition()));
+        SmartDashboard.putNumber("Position", pos);
     }
 
     public void ll2SetArm() {

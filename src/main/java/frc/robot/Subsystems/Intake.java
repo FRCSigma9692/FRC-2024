@@ -16,8 +16,7 @@ public class Intake extends SubsystemBase{
     public RelativeEncoder Enc2;
     boolean flag;
     public DigitalInput sensor;
-    // public CANSparkMax LED = new CANSparkMax(19, MotorType.kBrushed);
-    //  public ColourMatch colourMatch1 = new ColourMatch();
+    
     public Intake(){
         intake1 = new CANSparkMax(16, MotorType.kBrushless);
         Enc1 = intake1.getEncoder();
@@ -41,10 +40,6 @@ public class Intake extends SubsystemBase{
       
       if(x)
 flag = !flag;
-
-    // if( colourMatch1.red> 0.45 && colourMatch1.blue < 0.2){
-    //        SmartDashboard.putString("MOTORS", "STOP");
-    //        intake(0,0);
             }
 
     public boolean isOn1(){
@@ -60,12 +55,6 @@ flag = !flag;
     }
     public void DigitalDisplay(){
       SmartDashboard.putBoolean("DigitalSensor", sensor.get());
-      // if(!sensor.get()){
-      //   LED.set(0.1);
-      // }
-      // else{
-      //   LED.set(0);
-      // }
     }
 }
 
