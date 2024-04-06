@@ -34,8 +34,9 @@ public class Robot extends TimedRobot {
 
   ColourMatch color = new ColourMatch();
 
-
-
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+NetworkTableEntry tv = table.getEntry("tv");
+double tVV ;
   //private DriveSwerve robot = new DriveSwerve();
   private Command m_autonomousCommand;
 
@@ -57,23 +58,12 @@ public class Robot extends TimedRobot {
  SmartDashboard.putNumber("rightx", m_robotContainer.m_driverController.getRightX());
   //  m_robotContainer.mech.UpGetPos();
    m_robotContainer.mech.UpGetPosABS();
-   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  //  NetworkTable table2 = NetworkTableInstance.getDefault().getTable("CAM");
-   NetworkTableEntry tx = table.getEntry("tx");
-   NetworkTableEntry ty = table.getEntry("ty");
-   NetworkTableEntry ta = table.getEntry("ta");
-
-//read values periodically
-   double x = tx.getDouble(0.0);
-   double y = ty.getDouble(0.0);
-   double area = ta.getDouble(0.0);
+  
 
 SmartDashboard.putNumber("ArmOffset", m_robotContainer.offset);
 
 //post to smart dashboard periodically
-  SmartDashboard.putNumber("LimelightX", x);
-  SmartDashboard.putNumber("LimelightY", y);
-  SmartDashboard.putNumber("LimelightArea", area);
+
   SmartDashboard.putNumber("gyro", m_robotContainer.robot.yaw());
 CommandScheduler.getInstance().run();
 
@@ -106,22 +96,8 @@ m_robotContainer.shooter.displaySpeed();
 
   @Override
   public void autonomousPeriodic() {
-NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-NetworkTableEntry tx = table.getEntry("tx");
-NetworkTableEntry ty = table.getEntry("ty");
-NetworkTableEntry ta = table.getEntry("ta");
-
-//read values periodically
-double x = tx.getDouble(0.0);
-double y = ty.getDouble(0.0);
-double area = ta.getDouble(0.0);
 
 
-
-//post to smart dashboard periodically
-SmartDashboard.putNumber("LimelightX", x);
-SmartDashboard.putNumber("LimelightY", y);
-SmartDashboard.putNumber("LimelightArea", area);
   }
 
   @Override
@@ -158,6 +134,13 @@ SmartDashboard.putNumber("LimelightArea", area);
         DriveConstants.kMaxSpeedMetersPerSecond = DriveConstants.kFastSpeedMetersPerSecond;
       }
 
+      tVV = tv.getDouble(0.0);
+      if(tVV != 0){
+        table.getEntry("ledMode").setNumber(3);
+      }
+      else{
+        table.getEntry("ledMode").setNumber(1);
+      }
       //  if (m_robotContainer.m_driverController.getLeftTriggerAxis()>0.1){
       //   DriveConstants.kMaxSpeedMetersPerSecond =DriveConstants.kFastSpeedMetersPerSecond - DriveConstants.kFastSpeedMetersPerSecond * m_robotContainer.m_driverController.getLeftTriggerAxis() ;
       // }

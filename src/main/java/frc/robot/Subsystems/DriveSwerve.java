@@ -14,6 +14,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.util.WPIUtilJNI;
@@ -24,6 +26,16 @@ import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 
 public class DriveSwerve extends SubsystemBase {
+  
+  //Limelight
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTableEntry tx = table.getEntry("tx");
+
+  double targetX;
+  double error;
+  double kp = 0.02;
+  double output;
+  
   private double m_currentRotation = 0.0;
   private double m_currentTranslationDir = 0.0;
   private double m_currentTranslationMag = 0.0;
@@ -224,5 +236,28 @@ public class DriveSwerve extends SubsystemBase {
     fr.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     bl.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     br.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+  }
+
+  public void llAline(double xx, double yy){
+    targetX = tx.getDouble(0.0);
+    SmartDashboard.putNumber("aline target X", targetX);
+    SmartDashboard.putString("RoTATE", "YES");
+    if(targetX <= 2 && targetX >= -2 ){
+      SmartDashboard.putString("status","stop");
+      drive(xx,yy,0.0,true,false);
+    }
+    else if(targetX > 2){
+      error = targetX - 2;
+      output = Math.abs(error*kp);
+      SmartDashboard.putString("RoTATE", "Right");
+      drive(xx,yy,-output,true,false);
+    }
+
+    else if(targetX < -2){
+      error = targetX + 2;
+      output = Math.abs(error*kp);
+      SmartDashboard.putString("RoTATE", "Right");
+      drive(xx,yy,output,true,false);
+    }
   }
 }

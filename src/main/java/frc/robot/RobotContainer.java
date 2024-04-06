@@ -119,14 +119,22 @@ public double offset;
   new JoystickButton(m_driverController, Button.kCircle.value)
   .whileTrue(new RunCommand(() -> robot.gyro.reset(), robot));
   
-  new JoystickButton(m_driverController, Button.kTriangle.value)
-  .whileTrue(new RunCommand(() -> shooter.runShooter(0.7,0), shooter));
+  // new JoystickButton(m_driverController, Button.kTriangle.value)
+  // .whileTrue(new RunCommand(() -> shooter.runShooter(0.65,0), shooter));
   
   new Trigger(() -> m_driverController.getRightTriggerAxis()>0.7)
-  .whileTrue(new RunCommand(() -> shooter.runShooter(0.6,0), shooter)); 
+  .whileTrue(new RunCommand(() -> shooter.runShooter(0.65,0), shooter)); 
+
+  new Trigger(() -> m_driverController.getLeftTriggerAxis()>0.7)
+  .whileTrue(new RunCommand(() -> shooter.runShooter(0.45,0), shooter)); 
   
   new JoystickButton(m_driverController, Button.kR1.value)
   .whileTrue(new RunCommand(() -> robot.Xshape(), robot));
+
+  
+  new JoystickButton(m_driverController, Button.kSquare.value)
+  .whileTrue(new ParallelCommandGroup(new RunCommand(() -> mech.ll2SetArm(), mech),(new RunCommand(() -> robot.llAline((Math.abs(m_driverController.getLeftY()) > 0.06? -m_driverController.getLeftY(): 0),
+                (Math.abs(m_driverController.getLeftX()) > 0.06? -m_driverController.getLeftX(): 0)), robot))));
 
   // Driver 2
 
@@ -142,26 +150,26 @@ public double offset;
   new JoystickButton(m_driverController2, Button.kSquare.value)
   .onTrue(new RunCommand(() -> mech.armTo(91.5), mech)); //0.55
 
-  new JoystickButton(m_driverController2, Button.kCircle.value)
-  .whileTrue(new RunCommand(() -> mech.ll2SetArm(), mech));
    
   new JoystickButton(m_driverController2, Button.kTriangle.value)
   .whileTrue(new ParallelCommandGroup(new RunCommand(() -> shooter.runShooter(0.3,0), shooter),
   (new RunCommand(() -> intake.intake(0,0.5), intake)))); //Right is Intake , left is outtake
    
+   new JoystickButton(m_driverController2, Button.kCircle.value)
+  .whileTrue(new RunCommand(() -> shooter.runShooter(0.65,0), shooter));
     //POV
 
     new POVButton(m_driverController2, 0)
-    .whileTrue(new RunCommand(()-> mech.upwithabsenc(0.6), mech));
+    .whileTrue(new RunCommand(()-> mech.upwithabsenc(0.35), mech));
     
     new POVButton(m_driverController2, 180)
-    .whileTrue(new RunCommand(()-> mech.downwithabsenc(0.6), mech));
+    .whileTrue(new RunCommand(()-> mech.downwithabsenc(0.35), mech));
 
     new POVButton(m_driverController2, 90)
     .whileTrue(new RunCommand(() -> shooter.runShooter(0, 0.1), shooter));
 
     new POVButton(m_driverController2, 270)
-    .onTrue(new RunCommand(() -> mech.armTo(120), mech));
+    .onTrue(new RunCommand(() -> mech.armTo(96), mech));
 
     //Triggers
     new Trigger(() -> m_driverController2.getLeftTriggerAxis()>0.05)
@@ -170,8 +178,12 @@ public double offset;
     new Trigger(() -> m_driverController2.getRightTriggerAxis()>0.05)
     .whileTrue(new RunCommand(() -> intake.intake(m_driverController2.getRightTriggerAxis(),0), intake));
 
-    new Trigger(() -> (Math.abs(m_driverController2.getLeftY())>0.05 || Math.abs(m_driverController2.getRightY())>0.05))
-    .whileTrue(new RunCommand(() -> hanger.set(-m_driverController2.getLeftY(),-m_driverController2.getRightY()), hanger));
+    new Trigger(() -> (Math.abs(m_driverController2.getLeftY())>0.05 ))
+    .whileTrue(new RunCommand(() -> hanger.set(-m_driverController2.getLeftY(),-m_driverController2.getLeftY()), hanger));
+
+    new Trigger(() -> (Math.abs(m_driverController2.getRightY())>0.05 ))
+    .whileTrue(new RunCommand(() -> hanger.set(0,-m_driverController2.getRightY()), hanger));
+
     
   }
    public Command getAutonomousCommand() {
