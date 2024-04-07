@@ -34,7 +34,14 @@ public class DriveSwerve extends SubsystemBase {
   double targetX;
   double error;
   double kp = 0.02;
+  double dkp = 0.02;
+  double angleerror;
+  double driveerror;
+  double drivekp;
   double output;
+  double turnspeed= 0.5;
+  double yawangle;
+
   
   private double m_currentRotation = 0.0;
   private double m_currentTranslationDir = 0.0;
@@ -238,10 +245,83 @@ public class DriveSwerve extends SubsystemBase {
     br.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
+  public void align(double xx, double yy,double phase, String alliance){
+    yawangle = (yaw() +360 ) % 360 ;//will give 90 on left 270 on right
+    
+    // if(alliance == "b")
+    if(phase == 1){
+
+      if(yawangle <=92 && yawangle >=88){
+        drive(xx,yy,0,true,false);
+      }
+      else if(( yawangle <88 && yawangle >=0) || (yawangle >= 270  && yawangle <= 360)){
+        SmartDashboard.putString("position", "headup and go to left"); 
+        drive(xx,yy,0.3,true,false);
+      }
+      else if(yawangle >92 && yawangle <270){
+        SmartDashboard.putString("position", "headdown and go to right");
+        drive(xx,yy,-0.3,true,false);
+      }
+    }
+    else if(phase ==2){
+      
+      if(( yawangle <=90 && yawangle >=0) || (yawangle >= 270  && yawangle <= 360)){
+        if(yawangle <=90){
+          drivekp = turnspeed /90;
+          driveerror = (90 - yawangle) * kp ; 
+          drive(xx,yy,driveerror,true,false);
+        }
+        else if(yawangle >= 270){
+          drive(xx,yy,turnspeed,true,false);
+        }
+      }
+
+      else if(yawangle >90 && yawangle <270){
+        if(yawangle <180){
+          drivekp = turnspeed /90;
+          driveerror = (yawangle -90) * drivekp ; 
+          drive(xx,yy,-driveerror,true,false);
+        }
+        else if(yawangle >= 180){
+          drive(xx,yy,-turnspeed,true,false);
+        }
+      }
+    }
+    
+//    if(yaw() <0) 
+//    {
+// double negativeerror = yaw() + 90;
+//    }
+//    else if(yaw()>=0){
+//     double positiveerror = yaw() -90;
+//    }
+   
+    
+//      if(yaw()>=-90 && yaw()<=90 ){
+//     SmartDashboard.putString("alignnnn", "up");
+//      }
+//     else//( yaw() <= 89 && yaw() <= -90 ){
+//     {
+//       // angleerror = yaw() + dkp;
+//       // drive(xx,yy,error,true,false);
+//     SmartDashboard.putString("alignnnn", "down");
+
+//      }
+//     // else if(yaw() >= 91 && yaw() >= -91){
+//     //    error = yaw() - dkp;
+//     //   drive(xx,yy,error,true,false);
+//     // SmartDashboard.putString("alignnnn", "in");
+//   //}
+
+
+
+}
+
   public void llAline(double xx, double yy){
     targetX = tx.getDouble(0.0);
     SmartDashboard.putNumber("aline target X", targetX);
     SmartDashboard.putString("RoTATE", "YES");
+    
     if(targetX <= 2 && targetX >= -2 ){
       SmartDashboard.putString("status","stop");
       drive(xx,yy,0.0,true,false);
@@ -260,4 +340,5 @@ public class DriveSwerve extends SubsystemBase {
       drive(xx,yy,output,true,false);
     }
   }
+
 }

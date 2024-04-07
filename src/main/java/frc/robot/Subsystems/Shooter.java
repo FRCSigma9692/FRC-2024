@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase{
    public CANSparkMax r_pulley;
-   RelativeEncoder r_enc;
+   public RelativeEncoder r_enc;
    SparkPIDController r_pid;
    public CANSparkMax l_pulley;
-   RelativeEncoder l_enc;
+   public RelativeEncoder l_enc;
    SparkPIDController l_pid;
     double timer;
 

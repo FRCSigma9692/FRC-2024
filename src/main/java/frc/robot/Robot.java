@@ -5,10 +5,13 @@
 package frc.robot;
 
 
+import java.util.Optional;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 
@@ -31,8 +34,8 @@ public class Robot extends TimedRobot {
   double rightHeight;
   double ThresholdDist = 10;
   double kp = -0.01;
-
-  ColourMatch color = new ColourMatch();
+Optional<Alliance> ally ;
+  // ColourMatch color = new ColourMatch();
 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 NetworkTableEntry tv = table.getEntry("tv");
@@ -106,6 +109,7 @@ m_robotContainer.shooter.displaySpeed();
   @Override
   public void teleopInit() {
 
+    ally = DriverStation.getAlliance();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -141,6 +145,26 @@ m_robotContainer.shooter.displaySpeed();
       else{
         table.getEntry("ledMode").setNumber(1);
       }
+
+      SmartDashboard.putNumber("lspeed", m_robotContainer.shooter.l_enc.getVelocity());
+      SmartDashboard.putNumber("rspeed", m_robotContainer.shooter.r_enc.getVelocity());
+      SmartDashboard.putNumber("l_R_speed", m_robotContainer.shooter.l_enc.getVelocity() - m_robotContainer.shooter.r_enc.getVelocity());
+      SmartDashboard.putNumber("Gyrollakajsja", m_robotContainer.robot.yaw());
+      // SmartDashboard.putString("alignnnn", "out");  
+
+      if (ally.isPresent()) {
+        if (ally.get() == Alliance.Red) {
+          SmartDashboard.putString("alliance", "red");  
+        }
+        if (ally.get() == Alliance.Blue) {
+          SmartDashboard.putString("alliance", "blue");  
+        }
+    }
+    else {
+      SmartDashboard.putString("alliance", "none");  
+
+    }
+
       //  if (m_robotContainer.m_driverController.getLeftTriggerAxis()>0.1){
       //   DriveConstants.kMaxSpeedMetersPerSecond =DriveConstants.kFastSpeedMetersPerSecond - DriveConstants.kFastSpeedMetersPerSecond * m_robotContainer.m_driverController.getLeftTriggerAxis() ;
       // }

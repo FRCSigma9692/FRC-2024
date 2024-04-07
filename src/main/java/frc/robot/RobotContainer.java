@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -14,7 +15,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj.PS5Controller.Button;
@@ -52,7 +53,7 @@ public class RobotContainer {
   public Arm mech = new Arm();
   public Hang hanger = new Hang();
   public ShooterCmd Shoot = new ShooterCmd(shooter, intake, 1.7, 0.9, 0.75,0.9); 
-  public Shootcontinuecmd ShootContinue = new Shootcontinuecmd(shooter, intake, 14, 0.9, 0.3,0.9); 
+  public Shootcontinuecmd ShootContinue = new Shootcontinuecmd(shooter, intake, 7, 0.9, 0.3,0.9); 
  public SensorIntakeCmd intake_and_sense = new SensorIntakeCmd(intake, 0.8, intake.sensor , 4 );
 
   // public SensorIntakeCmd intake2 = new SensorIntakeCmd(intake, 0.8, intake.sensor , 10 );
@@ -136,6 +137,9 @@ public double offset;
   .whileTrue(new ParallelCommandGroup(new RunCommand(() -> mech.ll2SetArm(), mech),(new RunCommand(() -> robot.llAline((Math.abs(m_driverController.getLeftY()) > 0.06? -m_driverController.getLeftY(): 0),
                 (Math.abs(m_driverController.getLeftX()) > 0.06? -m_driverController.getLeftX(): 0)), robot))));
 
+  new JoystickButton(m_driverController, Button.kCross.value)
+  .whileTrue(new RunCommand(() -> robot.align((Math.abs(m_driverController.getLeftY()) > 0.06? -m_driverController.getLeftY(): 0),
+                (Math.abs(m_driverController.getLeftX()) > 0.06? -m_driverController.getLeftX(): 0),2,"blue"), robot));
   // Driver 2
 
   new JoystickButton(m_driverController2, Button.kR1.value)

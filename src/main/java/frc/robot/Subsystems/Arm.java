@@ -48,12 +48,12 @@ public class Arm extends SubsystemBase {
     private int targetV;
     private int targetID;
 
-    final double kP = 0.02;
+    final double kP = 0.04;
 
     double error = 0;
     double output = 0;
 
-    double startAngle = 23;
+    double startAngle = 24;
     double lastDistance;
     double angle;
     // End Limelight -----------------
@@ -121,13 +121,13 @@ public class Arm extends SubsystemBase {
 
     public void armDown(double B1) {
         pos = Math.toDegrees(l_UpAbsoluteEncoder.getPosition());
-        if(pos>95){
+        if(pos>88){
             l_Up.set(-(B1));
         }
-        else if (pos<95 && pos > 69) {
+        else if (pos<88 && pos > 69) {
             // double pow = B1/(pos-76);
 
-            l_Up.set(-(B1*(pos-68)*0.025));
+            l_Up.set(-(B1*(pos-68)*0.045));
         }
         else {
             l_Up.set(0);
@@ -340,7 +340,7 @@ public class Arm extends SubsystemBase {
             lastDistance = lastDistance*0.268;
             angle = lastDistance + startAngle + 69; 
             
-            if(actualDistance > 105){
+            if(actualDistance > 100){
                 angle -= 1.5;
             }
 
